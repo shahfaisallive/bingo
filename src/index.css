@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #c0c94b, #8551ca);
+  background-repeat: repeat;
+  height: 100vh;
 }
 
 /* General Styles */
@@ -19,8 +22,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #c0c94b, #8551ca); /* Gradient background */
+  padding-bottom: 50px;
 }
 
 .title {
@@ -30,10 +32,34 @@ body {
   font-family: monospace;
 }
 
+.logo{
+  position: relative;
+  width: 20%;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
 /* Table Styles */
 .bingo-table {
   border-collapse: collapse;
   margin: 0 auto;
+  
+}
+
+.bingo-table-active {
+  border-collapse: collapse;
+  margin: 0 auto;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  animation: glowing 1.5s infinite alternate;
+}
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4),
+      0 0 20px rgba(255, 255, 255, 0.3), 0 0 25px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(255, 255, 255, 0.5), 0 0 50px rgba(255, 255, 255, 0.4);
+  }
 }
 
 .bingo-cell {
@@ -96,6 +122,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 20px;
 }
 
 .start-button-active {
@@ -152,7 +179,23 @@ body {
   margin-top: 10px;
 }
 
-.footer{
-  position: absolute;
-  bottom: 5px;
+.score-container {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #fff;
 }
+
+.bingo-cell.completed {
+  background-color: rgb(26, 112, 18);
+}
+
+.footer{
+  margin-top: 50px;
+}
+
+
+
+
+
+
+/* CUSTOM STYLES  */

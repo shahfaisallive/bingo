@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css"; // Make sure to import the CSS file
 
 function App() {
   const initialGrid = (size) =>
     Array(size)
       .fill(null)
-      .map(() => Array(size).fill({ value: "", selected: false }));
+      .map(() =>
+        Array(size).fill({ value: "", selected: false, completed: false })
+      );
 
   const [size, setSize] = useState(5);
   const [grid, setGrid] = useState(initialGrid(size));
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [currentNumber, setCurrentNumber] = useState(1);
   const [error, setError] = useState("");
+  const [score, setScore] = useState(0);
 
   const handleSizeChange = (e) => {
     const newSize = parseInt(e.target.value, 10);
@@ -21,6 +24,7 @@ function App() {
       setCurrentNumber(1);
       setIsGameStarted(false);
       setError("");
+      setScore(0);
     } else {
       setError("Grid size must be between 1 and 11");
     }
@@ -28,7 +32,6 @@ function App() {
 
   const handleCellClick = (row, col) => {
     if (!isGameStarted && currentNumber <= size * size) {
-      // Check if the cell is already filled
       if (!grid[row][col].value) {
         const newGrid = grid.map((r, i) =>
           r.map((cell, j) =>
@@ -42,14 +45,90 @@ function App() {
         setError("Cell is already filled. Choose another cell.");
       }
     } else if (isGameStarted) {
-      // Toggle cell selection after the game has started
       const newGrid = grid.map((r, i) =>
         r.map((cell, j) =>
           i === row && j === col ? { ...cell, selected: !cell.selected } : cell
         )
       );
-      setGrid(newGrid);
+      const updatedGrid = markCompletedSequences(newGrid);
+      setGrid(updatedGrid);
+      setScore(calculateScore(updatedGrid));
     }
+  };
+
+  const markCompletedSequences = (grid) => {
+    let updatedGrid = [...grid];
+
+    // Check rows
+    for (let i = 0; i < size; i++) {
+      if (grid[i].every((cell) => cell.selected || cell.completed)) {
+        updatedGrid = updatedGrid.map((row, rowIndex) =>
+          row.map((cell, colIndex) =>
+            rowIndex === i ? { ...cell, completed: true } : cell
+          )
+        );
+      }
+    }
+
+    // Check columns
+    for (let i = 0; i < size; i++) {
+      if (grid.every((row) => row[i].selected || row[i].completed)) {
+        updatedGrid = updatedGrid.map((row) =>
+          row.map((cell, colIndex) =>
+            colIndex === i ? { ...cell, completed: true } : cell
+          )
+        );
+      }
+    }
+
+    // Check top-left to bottom-right diagonal
+    if (grid.every((row, i) => row[i].selected || row[i].completed)) {
+      updatedGrid = updatedGrid.map((row, i) =>
+        row.map((cell, j) => (i === j ? { ...cell, completed: true } : cell))
+      );
+    }
+
+    // Check top-right to bottom-left diagonal
+    if (
+      grid.every(
+        (row, i) => row[size - i - 1].selected || row[size - i - 1].completed
+      )
+    ) {
+      updatedGrid = updatedGrid.map((row, i) =>
+        row.map((cell, j) =>
+          j === size - i - 1 ? { ...cell, completed: true } : cell
+        )
+      );
+    }
+
+    return updatedGrid;
+  };
+
+  const calculateScore = (grid) => {
+    let score = 0;
+
+    // Check rows and columns
+    for (let i = 0; i < size; i++) {
+      // Check if all cells in a row are either selected or completed
+      if (grid[i].every((cell) => cell.selected || cell.completed)) score++;
+
+      // Check if all cells in a column are either selected or completed
+      if (grid.every((row) => row[i].selected || row[i].completed)) score++;
+    }
+
+    // Check diagonals
+    // Check top-left to bottom-right diagonal
+    if (grid.every((row, i) => row[i].selected || row[i].completed)) score++;
+
+    // Check top-right to bottom-left diagonal
+    if (
+      grid.every(
+        (row, i) => row[size - i - 1].selected || row[size - i - 1].completed
+      )
+    )
+      score++;
+
+    return score;
   };
 
   const handleStartGame = () => {
@@ -65,14 +144,19 @@ function App() {
     setIsGameStarted(false);
     setCurrentNumber(1);
     setError("");
+    setScore(0);
   };
 
-  // Check if all cells are filled to enable the start button
   const isGridFilled = grid.flat().every((cell) => cell.value !== "");
 
   return (
     <div className="app">
-      <h1 className="title">CHERRY BINGO</h1>
+      <img src="/assets/logo.png" className="logo" alt="logo" />
+      {isGameStarted && (
+        <div className="score-container">
+          <h2>Score: {score}</h2>
+        </div>
+      )}
       {!isGameStarted ? (
         <div className="size-input-container">
           <label htmlFor="grid-size">Grid Size:</label>
@@ -82,18 +166,20 @@ function App() {
             value={size}
             onChange={handleSizeChange}
             min="1"
-            disabled={isGameStarted} // Disable size change after game starts
+            disabled={isGameStarted}
           />
         </div>
       ) : null}
-      <table className="bingo-table">
+      <table className={isGameStarted ? "bingo-table-active" : "bingo-table"}>
         <tbody>
           {grid.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, colIndex) => (
                 <td
                   key={colIndex}
-                  className={`bingo-cell ${cell.selected ? "selected" : ""}`}
+                  className={`bingo-cell ${cell.selected ? "selected" : ""} ${
+                    cell.completed ? "completed" : ""
+                  }`}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                 >
                   <span className="cell-value">{cell.value}</span>
@@ -121,14 +207,14 @@ function App() {
         )}
       </div>
 
-      <div className="footer">
+      {/* <div className="footer">
         <p>
           Made by{" "}
           <a href="github.com/shahfaisallive" target="_blank">
             shahfaisallive
           </a>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
