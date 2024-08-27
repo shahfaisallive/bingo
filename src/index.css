@@ -7,7 +7,152 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* General Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #c0c94b, #8551ca); /* Gradient background */
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #ffffff;
+  font-family: monospace;
+}
+
+/* Table Styles */
+.bingo-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.bingo-cell {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #000;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+.bingo-cell.selected {
+  background-color: #8551ca;
+}
+
+.bingo-cell:hover {
+  background-color: #f0f0f0;
+}
+
+/* Input Styles */
+.bingo-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-size: 1.2rem;
+  outline: none;
+  background-color: transparent;
+  cursor: text;
+}
+
+.bingo-input::-webkit-inner-spin-button,
+.bingo-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Cell Value Styles */
+.cell-value {
+  font-size: 1.2rem;
+  color: #000;
+}
+
+/* Button Container Styles */
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Button Styles */
+.start-button-active,
+.start-button-inactive,
+.reset-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-button-active {
+  background-color: rgb(13, 216, 13);
+  color: #000;
+}
+
+.start-button-active:hover {
+  background-color: #31b631;
+}
+
+.start-button-inactive {
+  background-color: rgb(170, 179, 170);
+  color: #000;
+}
+
+.reset-button {
+  background-color: #ff6666;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #ff4d4d;
+}
+
+.start-button:focus,
+.reset-button:focus {
+  outline: none;
+}
+
+.start-button:active,
+.reset-button:active {
+  transform: scale(0.98);
+}
+
+
+.size-input-container {
+  margin-bottom: 20px;
+}
+
+.size-input-container label {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.size-input-container input {
+  padding: 5px;
+  font-size: 1.2rem;
+  width: 60px;
+}
+
+.error-message {
+  margin-top: 10px;
+}
+
+.footer{
+  position: absolute;
+  bottom: 5px;
 }
