@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect } from "react";
 // import "./index.css"; // Make sure to import the CSS file
 
@@ -17,10 +16,20 @@
 //   const [error, setError] = useState("");
 //   const [score, setScore] = useState(0);
 //   const [isWinner, setIsWinner] = useState(false); // New state to track the winner
+//   const [selectedColor, setSelectedColor] = useState("#8551ca");
+//   const [completedColor, setCompletedColor] = useState("#1a7012");
+//   const [fontFamily, setFontFamily] = useState("Arial");
 
 //   useEffect(() => {
 //     if (score >= size) {
 //       setIsWinner(true);
+
+//       // Hide "BINGOOOOOOOO" text after 3 seconds
+//       const timer = setTimeout(() => {
+//         setIsWinner(false);
+//       }, 5000);
+
+//       return () => clearTimeout(timer); // Clean up the timer on unmount
 //     }
 //   }, [score, size]);
 
@@ -157,14 +166,54 @@
 //     setIsWinner(false);
 //   };
 
+//   const handleSelectedColorChange = (e) => {
+//     setSelectedColor(e.target.value);
+//   };
+
+//   const handleCompletedColorChange = (e) => {
+//     setCompletedColor(e.target.value);
+//   };
+
+//   const handleFontChange = (e) => {
+//     setFontFamily(e.target.value);
+//   };
+
 //   const isGridFilled = grid.flat().every((cell) => cell.value !== "");
 
 //   return (
 //     <div className="app">
+//       <div className="top-bar">
+//         <div className="color-pickers">
+//           <input
+//             type="color"
+//             value={selectedColor}
+//             onChange={handleSelectedColorChange}
+//           />
+
+//           <input
+//             type="color"
+//             value={completedColor}
+//             onChange={handleCompletedColorChange}
+//           />
+//         </div>
+//         <div className="font-selector">
+//           <label>
+//             Select Font:
+//             <select value={fontFamily} onChange={handleFontChange}>
+//               <option value="Arial">Arial</option>
+//               <option value="Courier New">Courier New</option>
+//               <option value="Georgia">Georgia</option>
+//               <option value="Tahoma">Tahoma</option>
+//               <option value="Verdana">Verdana</option>
+//               {/* Add more fonts or import from Google Fonts */}
+//             </select>
+//           </label>
+//         </div>
+//       </div>
 //       <img src="/assets/logo.png" className="logo" alt="logo" />
 //       {isWinner && (
 //         <div className="winner-announcement">
-//           <h1 className="bingo-text">BINGOOOOOOOO</h1>
+//           <h1 className="bingo-text">BINGOOOOOOOO!!</h1>
 //         </div>
 //       )}
 //       {isGameStarted && (
@@ -192,10 +241,18 @@
 //               {row.map((cell, colIndex) => (
 //                 <td
 //                   key={colIndex}
-//                   className={`bingo-cell ${cell.selected ? "selected" : ""} ${
-//                     cell.completed ? "completed" : ""
+//                   className={`bingo-cell ${cell.completed ? "completed" : ""} ${
+//                     cell.selected ? "selected" : ""
 //                   }`}
 //                   onClick={() => handleCellClick(rowIndex, colIndex)}
+//                   style={{
+//                     backgroundColor: cell.completed
+//                       ? completedColor
+//                       : cell.selected
+//                       ? selectedColor
+//                       : "#fff",
+//                     fontFamily: fontFamily,
+//                   }}
 //                 >
 //                   <span className="cell-value">{cell.value}</span>
 //                 </td>
@@ -222,23 +279,19 @@
 //         )}
 //       </div>
 
-//       {/* <div className="footer">
+//       <div className="footer">
 //         <p>
-//           Made by{" "}
+//           Developed by{" "}
 //           <a href="github.com/shahfaisallive" target="_blank">
-//             shahfaisallive
+//             apka bhai
 //           </a>
 //         </p>
-//       </div> */}
+//       </div>
 //     </div>
 //   );
 // }
 
 // export default App;
-
-
-
-
 
 import React, { useState, useEffect } from "react";
 import "./index.css"; // Make sure to import the CSS file
@@ -258,6 +311,9 @@ function App() {
   const [error, setError] = useState("");
   const [score, setScore] = useState(0);
   const [isWinner, setIsWinner] = useState(false); // New state to track the winner
+  const [selectedColor, setSelectedColor] = useState("#8551ca");
+  const [completedColor, setCompletedColor] = useState("#1a7012");
+  const [fontFamily, setFontFamily] = useState("Arial");
 
   useEffect(() => {
     if (score >= size) {
@@ -405,10 +461,52 @@ function App() {
     setIsWinner(false);
   };
 
+  const handleSelectedColorChange = (e) => {
+    setSelectedColor(e.target.value);
+  };
+
+  const handleCompletedColorChange = (e) => {
+    setCompletedColor(e.target.value);
+  };
+
+  const handleFontChange = (e) => {
+    setFontFamily(e.target.value);
+  };
+
   const isGridFilled = grid.flat().every((cell) => cell.value !== "");
 
   return (
     <div className="app">
+      <div className="top-bar">
+        <div className="color-pickers">
+          <input
+            type="color"
+            value={selectedColor}
+            onChange={handleSelectedColorChange}
+          />
+          <input
+            type="color"
+            value={completedColor}
+            onChange={handleCompletedColorChange}
+          />
+        </div>
+        <div className="font-selector">
+          <label>
+            Select Font:
+            <select value={fontFamily} onChange={handleFontChange}>
+              <option value="Arial">Arial</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Lobster">Lobster</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Indie Flower">Indie Flower (Handwriting)</option>
+              <option value="Kalam">Kalam</option>
+              <option value="Tillana">Tillana</option>
+              <option value="Dancing Script">Dancing Script</option>
+              {/* Add more fonts or import from Google Fonts */}
+            </select>
+          </label>
+        </div>
+      </div>
       <img src="/assets/logo.png" className="logo" alt="logo" />
       {isWinner && (
         <div className="winner-announcement">
@@ -440,10 +538,18 @@ function App() {
               {row.map((cell, colIndex) => (
                 <td
                   key={colIndex}
-                  className={`bingo-cell ${cell.selected ? "selected" : ""} ${
-                    cell.completed ? "completed" : ""
+                  className={`bingo-cell ${cell.completed ? "completed" : ""} ${
+                    cell.selected ? "selected" : ""
                   }`}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
+                  style={{
+                    backgroundColor: cell.completed
+                      ? completedColor
+                      : cell.selected
+                      ? selectedColor
+                      : "#fff",
+                    fontFamily: fontFamily,
+                  }}
                 >
                   <span className="cell-value">{cell.value}</span>
                 </td>
@@ -470,14 +576,14 @@ function App() {
         )}
       </div>
 
-      {/* <div className="footer">
+      <div className="footer">
         <p>
-          Made by{" "}
+          Developed by{" "}
           <a href="github.com/shahfaisallive" target="_blank">
-            shahfaisallive
+            apka bhai
           </a>
         </p>
-      </div> */}
+      </div>
     </div>
   );
 }
