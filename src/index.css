@@ -10,7 +10,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, #109137, #8551ca);
   background-repeat: repeat;
-  height: 110vh;
+  height: 100vh;
 }
 
 /* General Styles */
@@ -35,6 +35,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: #1e4d7979;
+  margin-bottom: 50px;
 }
 
 .font-selector label {
@@ -57,14 +58,12 @@ body {
   border: none;
   height: 35px;
   width: 35px;
-  margin-right: 5px;
+  margin-left: 10px;
 }
 
 .logo{
   position: relative;
-  width: 20%;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  height: 50px;
 }
 /* Table Styles */
 .bingo-table {
@@ -238,6 +237,7 @@ body {
 .footer{
   position: absolute;
   bottom: 2%;
+  right: 2%;
 }
 
 

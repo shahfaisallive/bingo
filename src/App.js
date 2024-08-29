@@ -184,6 +184,7 @@ function App() {
     <div className="app">
       <div className="top-bar">
         <div className="color-pickers">
+          <img src="/assets/logo.png" className="logo" alt="logo" />
           <input
             type="color"
             value={selectedColor}
@@ -212,7 +213,6 @@ function App() {
           </label>
         </div>
       </div>
-      <img src="/assets/logo.png" className="logo" alt="logo" />
       {isWinner && (
         <div className="winner-announcement">
           <h1 className="bingo-text">BINGOOOOOOOO!!</h1>
@@ -284,7 +284,7 @@ function App() {
       <div className="footer">
         <p>
           Developed by{" "}
-          <a href="github.com/shahfaisallive" target="_blank">
+          <a href="https://github.com/shahfaisallive" target="_blank" rel="noreferrer">
             apka bhai
           </a>
         </p>
