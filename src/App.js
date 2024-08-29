@@ -33,8 +33,7 @@ function App() {
     }
   }, [score, size]);
 
-  const handleSizeChange = (e) => {
-    const newSize = parseInt(e.target.value, 10);
+  const handleSizeChange = (newSize) => {
     if (newSize > 1 && newSize < 12) {
       setSize(newSize);
       setGrid(initialGrid(newSize));
@@ -44,7 +43,19 @@ function App() {
       setScore(0);
       setIsWinner(false); // Reset the winner state
     } else {
-      setError("Grid size must be between 1 and 11");
+      setError("Grid size must be between 2 and 11");
+    }
+  };
+
+  const handleIncrement = () => {
+    if (size < 11) {
+      handleSizeChange(size + 1);
+    }
+  };
+
+  const handleDecrement = () => {
+    if (size > 2) {
+      handleSizeChange(size - 1);
     }
   };
 
@@ -183,34 +194,32 @@ function App() {
   return (
     <div className="app">
       <div className="top-bar">
-        <div className="color-pickers">
-          <img src="/assets/logo.png" className="logo" alt="logo" />
-          <input
-            type="color"
-            value={selectedColor}
-            onChange={handleSelectedColorChange}
-          />
-          <input
-            type="color"
-            value={completedColor}
-            onChange={handleCompletedColorChange}
-          />
-        </div>
-        <div className="font-selector">
-          <label>
-            Select Font:
+        <img src="/assets/logo.png" className="logo" alt="logo" />
+        <div className="custom-tools">
+          <div className="color-pickers">
+            <input
+              type="color"
+              value={selectedColor}
+              onChange={handleSelectedColorChange}
+            />
+            <input
+              type="color"
+              value={completedColor}
+              onChange={handleCompletedColorChange}
+            />
+          </div>
+          <div className="font-selector">
             <select value={fontFamily} onChange={handleFontChange}>
               <option value="Arial">Arial</option>
               <option value="Verdana">Verdana</option>
               <option value="Lobster">Lobster</option>
               <option value="Roboto">Roboto</option>
-              <option value="Indie Flower">Indie Flower (Handwriting)</option>
+              <option value="Indie Flower">Indie Flower</option>
               <option value="Kalam">Kalam</option>
               <option value="Tillana">Tillana</option>
               <option value="Dancing Script">Dancing Script</option>
-              {/* Add more fonts or import from Google Fonts */}
             </select>
-          </label>
+          </div>
         </div>
       </div>
       {isWinner && (
@@ -225,15 +234,11 @@ function App() {
       )}
       {!isGameStarted ? (
         <div className="size-input-container">
-          <label htmlFor="grid-size">Grid Size:</label>
-          <input
-            type="number"
-            id="grid-size"
-            value={size}
-            onChange={handleSizeChange}
-            min="1"
-            disabled={isGameStarted}
-          />
+          <div className="counter">
+            <button onClick={handleDecrement} disabled={size <= 2}><img src="/assets/minus.png" alt="minus" className="counter-icon"/></button>
+            <span>{size}</span>
+            <button onClick={handleIncrement} disabled={size >= 11}><img src="/assets/add.png" alt="add" className="counter-icon"/></button>
+          </div>
         </div>
       ) : null}
       <table className={isGameStarted ? "bingo-table-active" : "bingo-table"}>
@@ -284,7 +289,11 @@ function App() {
       <div className="footer">
         <p>
           Developed by{" "}
-          <a href="https://github.com/shahfaisallive" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/shahfaisallive"
+            target="_blank"
+            rel="noreferrer"
+          >
             apka bhai
           </a>
         </p>

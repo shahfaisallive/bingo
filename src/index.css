@@ -38,11 +38,8 @@ body {
   margin-bottom: 50px;
 }
 
-.font-selector label {
-  margin-right: 10px;
-  font-size: 1rem;
-  color: #c7bcbc;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+.custom-tools{
+  display: flex;
 }
 
 .font-selector select {
@@ -65,11 +62,42 @@ body {
   position: relative;
   height: 50px;
 }
+
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.counter button {
+  border: none;
+  cursor: pointer;
+  background: none;
+}
+.counter button:hover{
+  opacity: 0.6;
+}
+
+.counter button:disabled {
+  cursor: not-allowed;
+}
+
+.counter-icon{
+  width: 35px;
+}
+
+.counter span {
+  margin: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #faf5f5;
+}
+
 /* Table Styles */
 .bingo-table {
   border-collapse: collapse;
   margin: 0 auto;
-  
 }
 
 .bingo-table-active {
