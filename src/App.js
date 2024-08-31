@@ -199,6 +199,24 @@ function App() {
     setIsGameHidden(!isGameHidden);
   };
 
+  const handleRandomFill = () => {
+    const randomNumbers = Array.from({ length: size * size }, (_, i) => i + 1)
+      .sort(() => Math.random() - 0.5)
+      .map((num, index) => ({
+        value: num,
+        selected: false,
+        completed: false,
+      }));
+
+    const newGrid = [];
+    for (let i = 0; i < size; i++) {
+      newGrid.push(randomNumbers.slice(i * size, i * size + size));
+    }
+
+    setGrid(newGrid);
+    setCurrentNumber(size * size + 1);
+  };
+
   const isGridFilled = grid.flat().every((cell) => cell.value !== "");
 
   return (
@@ -233,7 +251,10 @@ function App() {
         </div>
       </div>
       {isGameStarted && (
-        <div className="score-container" style={{ fontFamily: fontFamily, filter: isGameHidden ? "blur(10px)" : "none" }}>
+        <div
+          className="score-container"
+          style={{ fontFamily: fontFamily, filter: isGameHidden ? "blur(10px)" : "none" }}
+        >
           <h2>Score: {score}</h2>
         </div>
       )}
@@ -300,6 +321,11 @@ function App() {
         {!isGameStarted && (
           <button className="reset-button" onClick={handleReset}>
             Reset
+          </button>
+        )}
+        {!isGameStarted && (
+          <button className="random-button" onClick={handleRandomFill}>
+            Random
           </button>
         )}
         {isGameStarted && (
