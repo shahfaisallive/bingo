@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import confetti from "canvas-confetti";
+import TopBar from "./components/Topbar";
+import Score from "./components/Score";
+import GridCounter from "./components/GridCounter";
+import GridTable from "./components/GridTable";
+import GameButtons from "./components/GameButtons";
+import Footer from "./components/Footer";
 
 function App() {
   const initialGrid = (size) =>
@@ -167,7 +173,7 @@ function App() {
     return score;
   };
 
-  const handleStartGame = () => {
+    const handleStartGame = () => {
     setIsGameStarted(true);
   };
 
@@ -221,132 +227,49 @@ function App() {
 
   return (
     <div className="app">
-      <div className="top-bar">
-        <img src="/assets/logo.png" className="logo" alt="logo" />
-        <div className="custom-tools">
-          <div className="color-pickers">
-            <input
-              type="color"
-              value={selectedColor}
-              onChange={handleSelectedColorChange}
-            />
-            <input
-              type="color"
-              value={completedColor}
-              onChange={handleCompletedColorChange}
-            />
-          </div>
-          <div className="font-selector">
-            <select value={fontFamily} onChange={handleFontChange}>
-              <option value="Arial">Arial</option>
-              <option value="Verdana">Verdana</option>
-              <option value="Lobster">Lobster</option>
-              <option value="Roboto">Roboto</option>
-              <option value="Indie Flower">Indie Flower</option>
-              <option value="Kalam">Kalam</option>
-              <option value="Tillana">Tillana</option>
-              <option value="Dancing Script">Dancing Script</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <TopBar
+        selectedColor={selectedColor}
+        completedColor={completedColor}
+        fontFamily={fontFamily}
+        handleSelectedColorChange={handleSelectedColorChange}
+        handleCompletedColorChange={handleCompletedColorChange}
+        handleFontChange={handleFontChange}
+      />
       {isGameStarted && (
-        <div
-          className="score-container"
-          style={{ fontFamily: fontFamily, filter: isGameHidden ? "blur(10px)" : "none" }}
-        >
-          <h2>Score: {score}</h2>
-        </div>
+        <Score
+          score={score}
+          fontFamily={fontFamily}
+          isGameHidden={isGameHidden}
+        />
       )}
       {!isGameStarted ? (
-        <div className="size-input-container">
-          <div className="counter">
-            <button onClick={handleDecrement} disabled={size <= 2}>
-              <img
-                src="/assets/minus.png"
-                alt="minus"
-                className="counter-icon"
-              />
-            </button>
-            <span>{size}</span>
-            <button onClick={handleIncrement} disabled={size >= 11}>
-              <img src="/assets/add.png" alt="add" className="counter-icon" />
-            </button>
-          </div>
-        </div>
+        <GridCounter
+          size={size}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+        />
       ) : null}
-      <table
-        className={
-          isGameStarted && !isGameHidden ? "bingo-table-active" : "bingo-table"
-        }
-        style={{ filter: isGameHidden ? "blur(10px)" : "none" }}
-      >
-        <tbody>
-          {grid.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell, colIndex) => (
-                <td
-                  key={colIndex}
-                  className={`bingo-cell ${
-                    cell.completed ? "completed" : ""
-                  } ${cell.selected ? "selected" : ""}`}
-                  onClick={() => handleCellClick(rowIndex, colIndex)}
-                  style={{
-                    backgroundColor: cell.completed
-                      ? completedColor
-                      : cell.selected
-                      ? selectedColor
-                      : "#fff",
-                    fontFamily: fontFamily,
-                  }}
-                >
-                  <span className="cell-value">{cell.value}</span>
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <GridTable
+        grid={grid}
+        isGameStarted={isGameStarted}
+        isGameHidden={isGameHidden}
+        handleCellClick={handleCellClick}
+        selectedColor={selectedColor}
+        completedColor={completedColor}
+        fontFamily={fontFamily}
+      />
       {error && <div className="error-message">{error}</div>}
-      <div className="button-container">
-        <button
-          className={
-            isGridFilled ? "start-button-active" : "start-button-inactive"
-          }
-          onClick={!isGameStarted ? handleStartGame : handleRestartGame}
-          disabled={!isGridFilled}
-        >
-          {isGameStarted ? "Restart Game" : "Start Game"}
-        </button>
-        {!isGameStarted && (
-          <button className="reset-button" onClick={handleReset}>
-            Reset
-          </button>
-        )}
-        {!isGameStarted && (
-          <button className="random-button" onClick={handleRandomFill}>
-            Random
-          </button>
-        )}
-        {isGameStarted && (
-          <button className="hide-button" onClick={toggleHideGame}>
-            {isGameHidden ? "Unhide Game" : "Hide Game"}
-          </button>
-        )}
-      </div>
-
-      <div className="footer">
-        <p>
-        Full Copyright Maal ©. Developed by{" "}
-          <a
-            href="https://github.com/shahfaisallive"
-            target="_blank"
-            rel="noreferrer"
-          >
-            apka bhai.
-          </a>
-        </p>
-      </div>
+      <GameButtons
+        isGridFilled={isGridFilled}
+        isGameStarted={isGameStarted}
+        handleStartGame={handleStartGame}
+        handleRestartGame={handleRestartGame}
+        handleReset={handleReset}
+        handleRandomFill={handleRandomFill}
+        toggleHideGame={toggleHideGame}
+        isGameHidden={isGameHidden}
+      />
+     <Footer />
     </div>
   );
 }

@@ -29,7 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 100px;
+  padding-top: 110px;
   padding-bottom: 100px;
 }
 
@@ -48,7 +48,7 @@ body {
 
 .logo{
   position: relative;
-  height: 50px;
+  height: 60px;
 }
 
 
@@ -73,6 +73,12 @@ body {
 }
 
 /* Counter styles */
+
+/* Counter styles */
+.size-input-container {
+  margin-bottom: 20px;
+}
+
 .counter {
   display: flex;
   align-items: center;
@@ -80,28 +86,40 @@ body {
   margin-top: 10px;
 }
 
-.counter button {
-  border: none;
-  cursor: pointer;
-  background: none;
-}
-.counter button:hover{
-  opacity: 0.6;
+.counter span {
+  margin: 0 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
 }
 
-.counter button:disabled {
+.counter-button {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b2dd18e0, #ffe600); 
+  color: rgb(255, 255, 255);
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0px 5px 15px rgba(0, 5px, 10px, 0.2); 
+}
+
+.counter-button:disabled {
+  background: linear-gradient(135deg, #cccccc, #999999); 
   cursor: not-allowed;
 }
 
-.counter-icon{
-  width: 35px;
+.counter-button:hover:not(:disabled) {
+  transform: scale(1.1); 
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); 
 }
 
-.counter span {
-  margin: 10px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #faf5f5;
+.counter-button:active {
+  transform: scale(0.9); 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -201,66 +219,61 @@ body {
 .reset-button,
 .random-button,
 .hide-button {
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 12px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 40px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
   margin-top: 20px;
   z-index: 1000;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4); 
+  color: #ffffff; 
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  justify-items: center;
 }
 
+.start-button-active:hover,
+.start-button-inactive:hover,
+.reset-button:hover,
+.random-button:hover,
+.hide-button:hover {
+  transform: scale(1.05); 
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); 
+}
+
+.start-button-active:active,
+.start-button-inactive:active,
+.reset-button:active,
+.random-button:active,
+.hide-button:active {
+  transform: scale(0.95); 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+/* Specific Button Colors */
 .start-button-active {
-  background-color: rgb(13, 216, 13);
-  color: #000;
-}
-
-.start-button-active:hover {
-  background-color: #31b631;
+  background: linear-gradient(135deg, #57c54c, #0a8027);
 }
 
 .start-button-inactive {
-  background-color: rgb(170, 179, 170);
-  color: #000;
+  background: linear-gradient(135deg, #a5a3a0, #6d6a69);
 }
 
 .reset-button {
-  background-color: #ff6666;
-  color: white;
+  background: linear-gradient(135deg, #f5300d, #a1090b);
 }
 
-.reset-button:hover {
-  background-color: #ff4d4d;
+.random-button {
+  background: linear-gradient(135deg, #a12af0, #6501b8);
 }
 
-.start-button:focus,
-.reset-button:focus {
-  outline: none;
-}
-
-.start-button:active,
-.reset-button:active {
-  transform: scale(0.98);
+.hide-button {
+  background: linear-gradient(135deg, #a12af0, #6501b8);
 }
 
 
-.size-input-container {
-  margin-bottom: 20px;
-}
-
-.size-input-container label {
-  margin-right: 10px;
-  font-size: 1.2rem;
-  color: #fff;
-}
-
-.size-input-container input {
-  padding: 5px;
-  font-size: 1.2rem;
-  width: 60px;
-}
-
+/* Error and score styles */
 .error-message {
   margin-top: 10px;
 }
@@ -271,10 +284,8 @@ body {
   color: #fff;
 }
 
-.bingo-cell.completed {
-  background-color: rgb(26, 112, 18);
-}
 
+/* Footer styles */
 .footer{
   position: fixed;
   bottom: 0;
