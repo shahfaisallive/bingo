@@ -1,6 +1,7 @@
 import React from "react";
+// import "./Score.css";
 
-const Score = ({ score, fontFamily, isGameHidden }) => {
+const Score = ({ score, fontFamily, isGameHidden, isWinner }) => {
   return (
     <div
       className="score-container"
@@ -9,7 +10,11 @@ const Score = ({ score, fontFamily, isGameHidden }) => {
         filter: isGameHidden ? "blur(10px)" : "none",
       }}
     >
-      <h2 className="score-text">Score: {score}</h2>
+      {isWinner ? (
+        <h2 className="bingo-animation">BINGOOOOOO!!!</h2> 
+      ) : (
+        <h2 className="score-text">Score: {score}</h2> 
+      )}
     </div>
   );
 };

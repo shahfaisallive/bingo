@@ -26,10 +26,12 @@ function App() {
   const [completedColor, setCompletedColor] = useState("#1a7012");
   const [fontFamily, setFontFamily] = useState("Lobster");
   const [isGameHidden, setIsGameHidden] = useState(false);
+  const [isWinner, setIsWinner] = useState(false);
 
   useEffect(() => {
     if (score >= size) {
-      launchConfetti(); 
+      launchConfetti();
+      setIsWinner(true);
     }
   }, [score, size]);
 
@@ -240,6 +242,7 @@ function App() {
           score={score}
           fontFamily={fontFamily}
           isGameHidden={isGameHidden}
+          isWinner={isWinner}
         />
       )}
       {!isGameStarted ? (
