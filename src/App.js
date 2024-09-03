@@ -175,12 +175,16 @@ function App() {
     return score;
   };
 
-    const handleStartGame = () => {
+  const handleStartGame = () => {
     setIsGameStarted(true);
   };
 
   const handleRestartGame = () => {
-    window.location.reload();
+    setGrid(initialGrid(size));
+    setIsGameStarted(false);
+    setCurrentNumber(1);
+    setError("");
+    setScore(0);
   };
 
   const handleReset = () => {
@@ -271,8 +275,9 @@ function App() {
         handleRandomFill={handleRandomFill}
         toggleHideGame={toggleHideGame}
         isGameHidden={isGameHidden}
+        fontFamily={fontFamily}
       />
-     <Footer />
+      <Footer />
     </div>
   );
 }

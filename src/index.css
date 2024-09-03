@@ -213,6 +213,28 @@ body {
   gap: 10px;
 }
 
+.button-wrapper {
+  text-align: center;
+  display: block;
+}
+
+.button-wrapper .button-text {
+  font-size: 14px;
+  color: #ffffff;
+  font-family: cursive;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(10px);
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.button-wrapper:hover .button-text {
+  opacity: 1;
+  transform: translateY(0); 
+}
+
 /* Control Button Styles */
 .start-button-active,
 .start-button-inactive,
