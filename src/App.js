@@ -7,6 +7,13 @@ import GridCounter from "./components/GridCounter";
 import GridTable from "./components/GridTable";
 import GameButtons from "./components/GameButtons";
 import Footer from "./components/Footer";
+import Lottie from "lottie-react";
+
+import celebration1 from "./animations/celebration1.json";
+import celebration2 from "./animations/celebration2.json";
+import celebration3 from "./animations/celebration3.json";
+import celebration4 from "./animations/celebration4.json";
+import celebration5 from "./animations/celebration5.json";
 
 function App() {
   const initialGrid = (size) =>
@@ -28,37 +35,54 @@ function App() {
   const [isGameHidden, setIsGameHidden] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [isPerfectBingo, setIsPerfectBingo] = useState(false);
+  const [showLottie, setShowLottie] = useState(false);
+  const [animationData, setAnimationData] = useState(celebration1);
+
+  // Array of animations
+  const animations = [
+    celebration1,
+    celebration2,
+    celebration3,
+    celebration4,
+    celebration5,
+  ];
 
   useEffect(() => {
     if (score >= size) {
       const perfectBingo = checkPerfectBingo(grid);
       if (perfectBingo) {
         setIsPerfectBingo(true);
-        launchConfetti(1);
+        launchConfetti(3);
       } else {
-        launchConfetti(4)
+        launchConfetti(1);
       }
-      
+
       setIsWinner(true);
+
+      // Set a random animation
+      const randomIndex = Math.floor(Math.random() * animations.length);
+      setAnimationData(animations[randomIndex]);
+
+      setShowLottie(true);
     }
   }, [score, size, grid]);
 
   const launchConfetti = (multiple) => {
     confetti({
-      particleCount: 200*multiple,
-      spread: 70*multiple,
+      particleCount: 200 * multiple,
+      spread: 70 * multiple,
       origin: { y: 0.6 },
     });
 
     confetti({
-      particleCount: 200*multiple,
-      spread: 200*multiple,
+      particleCount: 200 * multiple,
+      spread: 200 * multiple,
       origin: { y: 0.3 },
     });
 
     confetti({
-      particleCount: 150*multiple,
-      spread: 80*multiple,
+      particleCount: 150 * multiple,
+      spread: 80 * multiple,
       origin: { y: 0.9 },
     });
   };
@@ -73,6 +97,7 @@ function App() {
       setScore(0);
       setIsWinner(false);
       setIsPerfectBingo(false);
+      setShowLottie(false);
     } else {
       setError("Grid size must be between 2 and 11");
     }
@@ -201,6 +226,7 @@ function App() {
     setScore(0);
     setIsWinner(false);
     setIsPerfectBingo(false);
+    setShowLottie(false); // Hide the Lottie animation
   };
 
   const handleReset = () => {
@@ -211,6 +237,7 @@ function App() {
     setScore(0);
     setIsWinner(false);
     setIsPerfectBingo(false);
+    setShowLottie(false); // Hide the Lottie animation
   };
 
   const handleSelectedColorChange = (e) => {
@@ -259,6 +286,7 @@ function App() {
         handleCompletedColorChange={handleCompletedColorChange}
         handleFontChange={handleFontChange}
       />
+
       {isGameStarted && (
         <Score
           score={score}
@@ -297,6 +325,13 @@ function App() {
         fontFamily={fontFamily}
       />
       <Footer />
+
+      {/* Lottie Animation */}
+      {showLottie && (
+        <div className="lottie-animation">
+          <Lottie animationData={animationData} loop={true} />
+        </div>
+      )}
     </div>
   );
 }
