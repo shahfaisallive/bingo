@@ -33,10 +33,10 @@ body {
   padding-bottom: 100px;
 }
 
-/* TOP BAR */
+/* TOP BAR and settings*/
 .top-bar {
   width: 100%;
-  padding: 4px 10px;
+  padding: 4px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,31 +48,109 @@ body {
 
 .logo{
   position: relative;
-  height: 60px;
+  height: 50px;
 }
-
 
 .custom-tools{
   display: flex;
 }
 
-.font-selector select {
+.setting-container select {
   margin-left: 5px;
-  background-color: #5f3481;
-  padding: 2px;
+  background-color: #000000;
+  padding: 10px;
   font-size: small;
   color: #dad0d0;
 }
 
-.color-pickers input{
+.setting-container input{
   background-color: transparent;
   border: none;
-  height: 35px;
-  width: 35px;
+  height: 50px;
+  width: 50px;
   margin-left: 5px;
 }
 
-/* Counter styles */
+.settings-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.settings-icon:hover {
+  transform: rotate(90deg);
+}
+
+/* Settings Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  color: #3c0e61;
+  padding:30px 50px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: cursive;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #69cc8f, #3b9a50);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.color-pickers label, .font-selector label {
+  margin-right: 5px;
+}
+
+.modal-ok-button {
+  padding: 12px 30px;
+  width: 100%;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 60px;
+  z-index: 1000;
+  background-color: #0f5b13;
+  color: #ffffff; 
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  justify-items: center;
+  font-family: cursive;
+}
+
+.modal-ok-button:hover {
+  background-color: #0a380c;
+}
 
 /* Counter styles */
 .size-input-container {
@@ -326,6 +404,7 @@ body {
     opacity: 0.8;
   }
 }
+
 
 
 /* Footer styles */
