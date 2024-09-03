@@ -1,7 +1,6 @@
 import React from "react";
-// import "./Score.css";
 
-const Score = ({ score, fontFamily, isGameHidden, isWinner }) => {
+const Score = ({ score, fontFamily, isGameHidden, isWinner, isPerfectBingo }) => {
   return (
     <div
       className="score-container"
@@ -11,7 +10,11 @@ const Score = ({ score, fontFamily, isGameHidden, isWinner }) => {
       }}
     >
       {isWinner ? (
-        <h2 className="bingo-animation">BINGOOOOOO!!!</h2> 
+        isPerfectBingo ? (
+          <h2 className="bingo-animation">PERFECT BINGOOOO!!!</h2> 
+        ) : (
+          <h2 className="bingo-animation">BINGOOOOOO!!!</h2> 
+        )
       ) : (
         <h2 className="score-text">Score: {score}</h2> 
       )}

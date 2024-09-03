@@ -27,30 +27,38 @@ function App() {
   const [fontFamily, setFontFamily] = useState("Lobster");
   const [isGameHidden, setIsGameHidden] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
+  const [isPerfectBingo, setIsPerfectBingo] = useState(false);
 
   useEffect(() => {
     if (score >= size) {
-      launchConfetti();
+      const perfectBingo = checkPerfectBingo(grid);
+      if (!perfectBingo) {
+        setIsPerfectBingo(true);
+        launchConfetti(1);
+      } else {
+        launchConfetti(4)
+      }
+      
       setIsWinner(true);
     }
-  }, [score, size]);
+  }, [score, size, grid]);
 
-  const launchConfetti = () => {
+  const launchConfetti = (multiple) => {
     confetti({
-      particleCount: 200,
-      spread: 70,
+      particleCount: 200*multiple,
+      spread: 70*multiple,
       origin: { y: 0.6 },
     });
 
     confetti({
-      particleCount: 200,
-      spread: 200,
+      particleCount: 200*multiple,
+      spread: 200*multiple,
       origin: { y: 0.3 },
     });
 
     confetti({
-      particleCount: 150,
-      spread: 80,
+      particleCount: 150*multiple,
+      spread: 80*multiple,
       origin: { y: 0.9 },
     });
   };
@@ -63,6 +71,8 @@ function App() {
       setIsGameStarted(false);
       setError("");
       setScore(0);
+      setIsWinner(false);
+      setIsPerfectBingo(false);
     } else {
       setError("Grid size must be between 2 and 11");
     }
@@ -175,6 +185,10 @@ function App() {
     return score;
   };
 
+  const checkPerfectBingo = (grid) => {
+    return grid.flat().every((cell) => !cell.selected || cell.completed);
+  };
+
   const handleStartGame = () => {
     setIsGameStarted(true);
   };
@@ -185,6 +199,8 @@ function App() {
     setCurrentNumber(1);
     setError("");
     setScore(0);
+    setIsWinner(false);
+    setIsPerfectBingo(false);
   };
 
   const handleReset = () => {
@@ -193,6 +209,8 @@ function App() {
     setCurrentNumber(1);
     setError("");
     setScore(0);
+    setIsWinner(false);
+    setIsPerfectBingo(false);
   };
 
   const handleSelectedColorChange = (e) => {
@@ -247,6 +265,7 @@ function App() {
           fontFamily={fontFamily}
           isGameHidden={isGameHidden}
           isWinner={isWinner}
+          isPerfectBingo={isPerfectBingo}
         />
       )}
       {!isGameStarted ? (
