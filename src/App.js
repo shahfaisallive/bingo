@@ -32,7 +32,7 @@ function App() {
   useEffect(() => {
     if (score >= size) {
       const perfectBingo = checkPerfectBingo(grid);
-      if (!perfectBingo) {
+      if (perfectBingo) {
         setIsPerfectBingo(true);
         launchConfetti(1);
       } else {
