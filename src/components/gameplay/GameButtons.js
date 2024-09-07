@@ -18,7 +18,6 @@ function GameButtons({
   handleRandomFill,
   toggleHideGame,
   isGameHidden,
-  fontFamily,
 }) {
   return (
     <div className="button-container">

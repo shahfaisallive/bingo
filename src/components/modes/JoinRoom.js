@@ -10,7 +10,7 @@ const JoinRoom = ({ handleJoinRoom }) => {
 
   const handleJoin = () => {
     if (roomCode.trim()) {
-      handleJoinRoom(roomCode); // Call the join room function with the room code
+      handleJoinRoom(roomCode); 
     } else {
       alert("Please enter a valid room code.");
     }

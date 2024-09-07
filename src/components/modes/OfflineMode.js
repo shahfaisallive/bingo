@@ -1,12 +1,13 @@
 import React from "react";
-import './OfflineMode.css'
+import './OfflineMode.css';
 
-const OfflineMode = ({ handleSubModeSelect }) => {
+const OfflineMode = ({ handleSubModeSelect, handleModeReset }) => {
   return (
     <div className="offline-mode-selection">
       <h2>Play Offline</h2>
-      <button onClick={() => handleSubModeSelect("vsFriends")}>Play vs Friends</button>
-      <button onClick={() => handleSubModeSelect("vsBot")}>Play vs Bot</button>
+      <button className="mode-control-button" onClick={() => handleSubModeSelect("vsFriends")}>Play vs Friends</button>
+      <button className="mode-control-button" onClick={() => handleSubModeSelect("vsBot")}>Play vs Bot</button>
+      <button className="go-back-button" onClick={handleModeReset}>Go Back</button>
     </div>
   );
 };

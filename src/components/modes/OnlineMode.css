@@ -11,11 +11,11 @@
     font-size: 2.5rem;
     color: #fff;
     margin-bottom: 40px;
-    font-family: 'Lobster', cursive; /* Matches the font family from the theme */
+    font-family: monospace; 
     text-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
   }
   
-  .online-mode-selection button {
+  .mode-control-button {
     background: linear-gradient(135deg, #5c2a9e, #604974);
     border: none;
     border-radius: 30px;
@@ -26,18 +26,32 @@
     cursor: pointer;
     margin: 20px 0;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Adds a stylish shadow */
-    font-family: 'Lobster', cursive; /* Use the game theme font */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
+    font-family: monospace; 
   }
   
-  .online-mode-selection button:hover {
-    background: linear-gradient(135deg, #2b5876, #4e4376); /* Hover effect with a different gradient */
-    transform: scale(1.05); /* Slight scaling on hover */
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* More shadow on hover */
+  .mode-control-button:hover {
+    background: linear-gradient(135deg, #2b5876, #4e4376); 
+    transform: scale(1.05); 
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); 
   }
   
-  .online-mode-selection button:active {
-    transform: scale(0.98); /* Pressing effect */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Reduced shadow when clicked */
+  .mode-control-button:active {
+    transform: scale(0.98); 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); 
   }
   
+  .go-back-button {
+    background-color: #325f14;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: background-color 0.3s;
+  }
+  
+  .go-back-button:hover {
+    background-color: #0d3d2d;
+  }

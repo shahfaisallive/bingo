@@ -9,7 +9,6 @@ import JoinRoom from "./components/modes/JoinRoom";
 import TopBar from "./components/shared/Topbar";
 import Footer from "./components/shared/Footer";
 
-// Function to get the game mode and sub-mode from session storage
 const getSavedMode = () => {
   return sessionStorage.getItem("gameMode") || null;
 };
@@ -29,17 +28,24 @@ function App() {
   const [selectedColor, setSelectedColor] = useState("#8551ca");
   const [completedColor, setCompletedColor] = useState("#1a7012");
   const [fontFamily, setFontFamily] = useState("Lobster");
-  const [isGameHidden, setIsGameHidden] = useState(false); // Add this state
+  const [isGameHidden, setIsGameHidden] = useState(false);
 
   const handleModeSelect = (mode) => {
     setGameMode(mode);
-    setSubMode(null); // Reset sub-mode when a new mode is selected
+    setSubMode(null);
     sessionStorage.setItem("gameMode", mode);
   };
 
   const handleSubModeSelect = (subMode) => {
     setSubMode(subMode);
     sessionStorage.setItem("subMode", subMode);
+  };
+
+  const handleModeReset = () => {
+    setGameMode(null);
+    setSubMode(null);
+    sessionStorage.removeItem("gameMode");
+    sessionStorage.removeItem("subMode");
   };
 
   const handleRoomDetailsChange = (e) => {
@@ -62,14 +68,12 @@ function App() {
     setGameMode("room");
   };
 
-  // Define toggleHideGame function
   const toggleHideGame = () => {
     setIsGameHidden(!isGameHidden);
   };
 
   return (
     <div className="app">
-      {/* Move TopBar to App.js */}
       <TopBar
         selectedColor={selectedColor}
         completedColor={completedColor}
@@ -77,13 +81,17 @@ function App() {
         handleSelectedColorChange={(e) => setSelectedColor(e.target.value)}
         handleCompletedColorChange={(e) => setCompletedColor(e.target.value)}
         handleFontChange={(e) => setFontFamily(e.target.value)}
+        handleModeReset={handleModeReset}
+        gameMode={gameMode}
       />
 
-      {/* Main Mode Selection */}
       {!gameMode && <GameMode handleModeSelect={handleModeSelect} />}
 
       {gameMode === "offline" && !subMode && (
-        <OfflineMode handleSubModeSelect={handleSubModeSelect} />
+        <OfflineMode
+          handleSubModeSelect={handleSubModeSelect}
+          handleModeReset={handleModeReset}
+        />
       )}
       {gameMode === "offline" && subMode === "vsFriends" && (
         <Game
@@ -108,7 +116,10 @@ function App() {
       )}
 
       {gameMode === "online" && !subMode && (
-        <OnlineMode handleSubModeSelect={handleSubModeSelect} />
+        <OnlineMode
+          handleSubModeSelect={handleSubModeSelect}
+          handleModeReset={handleModeReset}
+        />
       )}
       {gameMode === "online" && subMode === "createRoom" && (
         <CreateRoom
@@ -133,7 +144,6 @@ function App() {
         />
       )}
 
-      {/* Move Footer to App.js */}
       <Footer />
     </div>
   );

@@ -14,3 +14,30 @@
     position: relative;
     height: 50px;
   }
+
+  .settings-container{
+    display: flex;
+    align-items: center;
+  }
+  .mode-button {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
+  .mode-button:hover{
+    transition: font-size 0.3s;
+    background-color: #281c4ba2;
+  }
+  
+  .settings-icon{
+    margin-left: 10px;
+  }
+
+  .mode-button:hover {
+    color: #f0c040;
+  }

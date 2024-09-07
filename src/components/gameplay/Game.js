@@ -20,6 +20,7 @@ function Game({
   selectedColor,
   completedColor,
   toggleHideGame,
+  isGameHidden
 }) {
   const initialGrid = (size) =>
     Array(size)
@@ -34,7 +35,6 @@ function Game({
   const [currentNumber, setCurrentNumber] = useState(1);
   const [error, setError] = useState("");
   const [score, setScore] = useState(0);
-  const [isGameHidden, setIsGameHidden] = useState(false);
   const [isWinner, setIsWinner] = useState(false);
   const [isPerfectBingo, setIsPerfectBingo] = useState(false);
   const [showLottie, setShowLottie] = useState(false);
@@ -144,7 +144,6 @@ function Game({
   const markCompletedSequences = (grid) => {
     let updatedGrid = [...grid];
 
-    // Check rows
     for (let i = 0; i < size; i++) {
       if (grid[i].every((cell) => cell.selected || cell.completed)) {
         updatedGrid = updatedGrid.map((row, rowIndex) =>
@@ -155,7 +154,6 @@ function Game({
       }
     }
 
-    // Check columns
     for (let i = 0; i < size; i++) {
       if (grid.every((row) => row[i].selected || row[i].completed)) {
         updatedGrid = updatedGrid.map((row) =>
@@ -166,14 +164,12 @@ function Game({
       }
     }
 
-    // Check top-left to bottom-right diagonal
     if (grid.every((row, i) => row[i].selected || row[i].completed)) {
       updatedGrid = updatedGrid.map((row, i) =>
         row.map((cell, j) => (i === j ? { ...cell, completed: true } : cell))
       );
     }
 
-    // Check top-right to bottom-left diagonal
     if (
       grid.every(
         (row, i) => row[size - i - 1].selected || row[size - i - 1].completed
@@ -191,14 +187,10 @@ function Game({
 
   const calculateScore = (grid) => {
     let score = 0;
-
-    // Check rows and columns
     for (let i = 0; i < size; i++) {
       if (grid[i].every((cell) => cell.selected || cell.completed)) score++;
       if (grid.every((row) => row[i].selected || row[i].completed)) score++;
     }
-
-    // Check diagonals
     if (grid.every((row, i) => row[i].selected || row[i].completed)) score++;
     if (
       grid.every(
@@ -226,7 +218,7 @@ function Game({
     setScore(0);
     setIsWinner(false);
     setIsPerfectBingo(false);
-    setShowLottie(false); // Hide the Lottie animation
+    setShowLottie(false); 
   };
 
   const handleReset = () => {
@@ -237,7 +229,7 @@ function Game({
     setScore(0);
     setIsWinner(false);
     setIsPerfectBingo(false);
-    setShowLottie(false); // Hide the Lottie animation
+    setShowLottie(false);
   };
 
   const handleRandomFill = () => {
