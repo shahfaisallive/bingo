@@ -1,0 +1,111 @@
+/* Table Styles */
+.bingo-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+  
+  .bingo-table-active {
+    border-collapse: collapse;
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    animation: glowing 1.5s infinite alternate;
+  }
+  @keyframes glowing {
+    0% {
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 15px rgba(255, 255, 255, 0.4),
+        0 0 20px rgba(255, 255, 255, 0.3), 0 0 25px rgba(255, 255, 255, 0.2);
+    }
+    100% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.6),
+        0 0 40px rgba(113, 39, 173, 0.39), 0 0 50px rgba(106, 15, 158, 0.548);
+    }
+  }
+  
+  .bingo-cell {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background-color 0.3s, font-family 0.3s;
+  }
+  
+  .bingo-cell.selected {
+    background-color: #8551ca;
+  }
+  
+  .bingo-cell.completed {
+    background-color: #1a7012; 
+  }
+  
+  .bingo-cell:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .cell-value {
+    font-size: 1.2rem;
+  }
+  
+  .color-pickers {
+    display: flex;
+    align-items: center;
+  }
+  
+  .font-selector {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Input Styles */
+  .bingo-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 1.2rem;
+    outline: none;
+    background-color: transparent;
+    cursor: text;
+  }
+  
+  .bingo-input::-webkit-inner-spin-button,
+  .bingo-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Cell Value Styles */
+  .cell-value {
+    font-size: 1.2rem;
+    color: #38084e;
+  }
+  
+  /* Button Container Styles */
+  .button-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .button-wrapper {
+    text-align: center;
+    display: block;
+  }
+  
+  .button-wrapper .button-text {
+    font-size: 14px;
+    color: #ffffff;
+    font-family: cursive;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+  }
+  
+  .button-wrapper:hover .button-text {
+    opacity: 1;
+    transform: translateY(0); 
+  }

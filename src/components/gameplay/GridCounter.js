@@ -1,4 +1,5 @@
 import React from "react";
+import './GridCounter.css'
 
 function GridCounter({ size, handleIncrement, handleDecrement }) {
   return (

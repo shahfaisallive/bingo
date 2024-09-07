@@ -1,0 +1,43 @@
+.offline-mode-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 100px;
+}
+  
+  .offline-mode-selection h2 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 40px;
+    text-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Lobster', cursive; 
+  }
+  
+  .offline-mode-selection button {
+    background: linear-gradient(135deg, #5c2a9e, #604974);
+    border: none;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 15px 30px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Lobster', cursive; 
+  }
+  
+  .offline-mode-selection button:hover {
+    background: linear-gradient(135deg, #8551ca, #109137); /* Hover effect with a different gradient */
+    transform: scale(1.05); /* Slight scaling on hover */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3); /* More shadow on hover */
+  }
+  
+  .offline-mode-selection button:active {
+    transform: scale(0.98); /* Pressing effect */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Reduced shadow when clicked */
+  }
+  

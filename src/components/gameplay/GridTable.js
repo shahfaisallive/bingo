@@ -1,4 +1,5 @@
 import React from "react";
+import './GridTable.css'
 
 function GridTable({
   grid,

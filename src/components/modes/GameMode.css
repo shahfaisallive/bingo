@@ -1,0 +1,15 @@
+.game-mode-selection {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  .game-mode-icons{
+    width: 40%;
+    margin: 20px;
+  }
+  
+  .game-mode-icons:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+    transition: transform 0.5s;
+  }

@@ -1,4 +1,5 @@
 import React from "react";
+import './Score.css'
 
 const Score = ({ score, fontFamily, isGameHidden, isWinner, isPerfectBingo }) => {
   return (

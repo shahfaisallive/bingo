@@ -1,4 +1,5 @@
 import React from "react";
+import './SettingsModal.css'
 
 function SettingsModal({
   isOpen,

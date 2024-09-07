@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './TopBar.css'
 import { FaCog } from "react-icons/fa";
 import SettingsModal from "./SettingsModal";
 

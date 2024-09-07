@@ -1,0 +1,13 @@
+.footer{
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    background: linear-gradient(135deg, #26a84d, #9a78c7);  
+    width: 100%;
+    color: #e0d7d7;
+    font-size: 14px;
+  }
+  

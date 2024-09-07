@@ -1,4 +1,5 @@
 import React from "react";
+import './GameButtons.css'
 import {
   FaPlay,
   FaRedo,
