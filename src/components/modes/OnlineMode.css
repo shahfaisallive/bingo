@@ -25,6 +25,7 @@
     padding: 15px 30px;
     cursor: pointer;
     margin: 20px 0;
+    width: 100%;
     transition: all 0.3s ease;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); 
     font-family: monospace; 
@@ -39,6 +40,28 @@
   .mode-control-button:active {
     transform: scale(0.98); 
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); 
+  }
+
+  .button-wrapper {
+    text-align: center;
+    display: block;
+    position: relative;
+  }
+  
+  .tooltip-text {
+    font-size: 14px;
+    color: #ffffff;
+    font-family: cursive;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(10px);
+    text-align: center;
+    margin-top: 5px;
+  }
+  
+  .button-wrapper:hover .tooltip-text {
+    opacity: 1;
+    transform: translateY(0);
   }
   
   .go-back-button {
