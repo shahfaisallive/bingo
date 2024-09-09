@@ -36,8 +36,72 @@
   
   .settings-icon{
     margin-left: 10px;
+    margin-right: 10px;
   }
 
   .mode-button:hover {
     color: #f0c040;
   }
+
+  .user-info-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .user-name-button {
+    background: none;
+    border: none;
+    color: rgb(135, 189, 55);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .user-name-button:hover {
+    color: #b6cebc;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #1e4d79;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+  }
+  
+  .dropdown-menu p {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+  }
+  
+  .login-button{
+    background-color: #40a562;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .logout-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .logout-btn:hover {
+    background-color: #d32f2f;
+  }
+

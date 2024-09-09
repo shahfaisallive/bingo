@@ -14,7 +14,6 @@ const OnlineMode = ({ handleSubModeSelect, handleModeReset }) => {
           Create Room
         </button>
         <p className="tooltip-text">Host a room and invite friends!</p>{" "}
-        {/* Tooltip */}
       </div>
 
       <div className="button-wrapper">

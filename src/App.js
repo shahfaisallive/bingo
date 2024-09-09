@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
 import Game from "./components/gameplay/Game";
 import GameMode from "./components/modes/GameMode";
@@ -8,6 +8,8 @@ import CreateRoom from "./components/modes/CreateRoom";
 import JoinRoom from "./components/modes/JoinRoom";
 import TopBar from "./components/shared/Topbar";
 import Footer from "./components/shared/Footer";
+import { useLocation, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const getSavedMode = () => {
   return sessionStorage.getItem("gameMode") || null;
@@ -17,6 +19,8 @@ const getSavedSubMode = () => {
 };
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
   const [gameMode, setGameMode] = useState(getSavedMode());
   const [subMode, setSubMode] = useState(getSavedSubMode());
   const [roomDetails, setRoomDetails] = useState({
@@ -30,7 +34,60 @@ function App() {
   const [fontFamily, setFontFamily] = useState("Lobster");
   const [isGameHidden, setIsGameHidden] = useState(false);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Handle token in URL and set user authentication state
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("authToken", token);
+      const decodedUser = jwtDecode(token);
+      setUser(decodedUser);
+      setAuthenticated(true);
+      window.history.replaceState({}, document.title, "/");
+    } else {
+      const storedToken = localStorage.getItem("authToken");
+      if (storedToken) {
+        try {
+          const decodedUser = jwtDecode(storedToken);
+          setUser(decodedUser);
+          setAuthenticated(true);
+        } catch (error) {
+          console.error("Invalid token:", error);
+          localStorage.removeItem("authToken");
+        }
+      }
+    }
+  }, []);
+
+  const handleLogin = () => {
+    window.location.href = "http://localhost:4000/api/auth/google";
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/logout", { method: "GET" });
+      localStorage.removeItem("authToken");
+      setAuthenticated(false);
+      setUser(null);
+      setGameMode(null);
+      setSubMode(null);
+      sessionStorage.removeItem("gameMode");
+      sessionStorage.removeItem("subMode");
+      navigate("/");
+    } catch (error) {
+      console.log("Error during logout:", error);
+    }
+  };
+
   const handleModeSelect = (mode) => {
+    if (mode === "online" && !authenticated) {
+      alert("Please login to play online!");
+      return;
+    }
     setGameMode(mode);
     setSubMode(null);
     sessionStorage.setItem("gameMode", mode);
@@ -83,6 +140,10 @@ function App() {
         handleFontChange={(e) => setFontFamily(e.target.value)}
         handleModeReset={handleModeReset}
         gameMode={gameMode}
+        authenticated={authenticated}
+        user={user}
+        handleLogin={handleLogin}
+        handleLogout={handleLogout}
       />
 
       {!gameMode && <GameMode handleModeSelect={handleModeSelect} />}
@@ -100,7 +161,7 @@ function App() {
           selectedColor={selectedColor}
           completedColor={completedColor}
           toggleHideGame={toggleHideGame}
-          isGameHidden={isGameHidden} // Pass this down to Game component
+          isGameHidden={isGameHidden}
         />
       )}
       {gameMode === "offline" && subMode === "vsBot" && (

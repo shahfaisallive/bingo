@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './TopBar.css';
+import "./TopBar.css";
 import { FaCog } from "react-icons/fa";
 import SettingsModal from "./SettingsModal";
 
@@ -10,11 +10,16 @@ function TopBar({
   handleSelectedColorChange,
   handleCompletedColorChange,
   handleFontChange,
-  gameMode, 
-  handleModeReset, 
+  gameMode,
+  handleModeReset,
+  authenticated,
+  user,
+  handleLogin,
+  handleLogout,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // Add hover state
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -24,19 +29,46 @@ function TopBar({
     setIsModalOpen(false);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <div className="top-bar">
       <img src="/assets/logo.png" className="logo" alt="logo" />
       <div className="settings-container">
-      <button
-        className="mode-button"
-        onClick={handleModeReset}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {isHovered ? "Change Mode" : `${gameMode === "online" ? "Online Mode" : gameMode === "offline" ? "Offline Mode" : "Game Mode"}`}
-      </button>
-      <FaCog className="settings-icon" onClick={openModal} />
+        <button
+          className="mode-button"
+          onClick={handleModeReset}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {isHovered
+            ? "Change Mode"
+            : `${gameMode === "online" ? "Online Mode" : "Offline Mode"}`}
+        </button>
+
+        {authenticated ? (
+          <div className="user-info-container">
+            <button className="user-name-button" onClick={toggleDropdown}>
+              {user.name} {/* Display user's name */}
+            </button>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                <p>{user.email}</p> {/* Display user's email */}
+                <button onClick={handleLogout} className="logout-btn">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <button className="login-button" onClick={handleLogin}>
+            Login with Google
+          </button>
+        )}
+
+        <FaCog className="settings-icon" onClick={openModal} />
       </div>
       <SettingsModal
         isOpen={isModalOpen}

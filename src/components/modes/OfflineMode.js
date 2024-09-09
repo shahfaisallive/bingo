@@ -18,12 +18,12 @@ const OfflineMode = ({ handleSubModeSelect, handleModeReset }) => {
 
       <div className="button-wrapper">
         <button
-          className="mode-control-button"
+          className="mode-control-button" disabled
           onClick={() => handleSubModeSelect("vsBot")}
         >
           Play vs Bot
         </button>
-        <p className="tooltip-text">Practice against a bot!</p> {/* Tooltip */}
+        <p className="tooltip-text">Practice against a bot! (coming soon)</p> {/* Tooltip */}
       </div>
 
       <button className="go-back-button" onClick={handleModeReset}>
