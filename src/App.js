@@ -1,4 +1,240 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+// import "./index.css";
+// import Game from "./components/gameplay/Game";
+// import GameMode from "./components/modes/GameMode";
+// import OfflineMode from "./components/modes/OfflineMode";
+// import OnlineMode from "./components/modes/OnlineMode";
+// import CreateRoom from "./components/modes/CreateRoom";
+// import JoinRoom from "./components/modes/JoinRoom";
+// import TopBar from "./components/shared/Topbar";
+// import Footer from "./components/shared/Footer";
+// import { useNavigate } from "react-router-dom";
+// import { jwtDecode } from "jwt-decode";
+// import { axiosInstance } from "./axiosInstance";
+
+// const getSavedMode = () => {
+//   return sessionStorage.getItem("gameMode") || null;
+// };
+// const getSavedSubMode = () => {
+//   return sessionStorage.getItem("subMode") || null;
+// };
+
+// function App() {
+//   const [authenticated, setAuthenticated] = useState(false);
+//   const [user, setUser] = useState(null);
+//   const [gameMode, setGameMode] = useState(getSavedMode());
+//   const [subMode, setSubMode] = useState(getSavedSubMode());
+//   const [roomDetails, setRoomDetails] = useState({
+//     roomName: "",
+//     gridSize: 5,
+//     maxPlayers: 2,
+//   });
+
+//   const [selectedColor, setSelectedColor] = useState("#8551ca");
+//   const [completedColor, setCompletedColor] = useState("#1a7012");
+//   const [fontFamily, setFontFamily] = useState("Lobster");
+//   const [isGameHidden, setIsGameHidden] = useState(false);
+
+//   const navigate = useNavigate();
+
+//   // Handle token in URL and set user authentication state
+//   useEffect(() => {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const token = urlParams.get("token");
+
+//     if (token) {
+//       localStorage.setItem("authToken", token);
+//       const decodedUser = jwtDecode(token);
+//       setUser(decodedUser);
+//       setAuthenticated(true);
+//       window.history.replaceState({}, document.title, "/");
+//     } else {
+//       const storedToken = localStorage.getItem("authToken");
+//       if (storedToken) {
+//         try {
+//           const decodedUser = jwtDecode(storedToken);
+//           setUser(decodedUser);
+//           setAuthenticated(true);
+//         } catch (error) {
+//           console.error("Invalid token:", error);
+//           localStorage.removeItem("authToken");
+//         }
+//       }
+//     }
+//   }, []);
+
+//   const handleLogin = () => {
+//     window.location.href = `${process.env.REACT_APP_API_URI}/auth/google`;
+//   };
+
+//   const handleLogout = async () => {
+//     try {
+//       await fetch("/logout", { method: "GET" });
+//       localStorage.removeItem("authToken");
+//       setAuthenticated(false);
+//       setUser(null);
+//       setGameMode(null);
+//       setSubMode(null);
+//       sessionStorage.removeItem("gameMode");
+//       sessionStorage.removeItem("subMode");
+//       navigate("/");
+//     } catch (error) {
+//       console.log("Error during logout:", error);
+//     }
+//   };
+
+//   const handleModeSelect = (mode) => {
+//     if (mode === "online" && !authenticated) {
+//       alert("Please login to play online!");
+//       return;
+//     }
+//     setGameMode(mode);
+//     setSubMode(null);
+//     sessionStorage.setItem("gameMode", mode);
+//   };
+
+//   const handleSubModeSelect = (subMode) => {
+//     setSubMode(subMode);
+//     sessionStorage.setItem("subMode", subMode);
+//   };
+
+//   const handleModeReset = () => {
+//     setGameMode(null);
+//     setSubMode(null);
+//     sessionStorage.removeItem("gameMode");
+//     sessionStorage.removeItem("subMode");
+//   };
+
+//   const handleRoomDetailsChange = (e) => {
+//     setRoomDetails({
+//       ...roomDetails,
+//       [e.target.name]: e.target.value,
+//     });
+//   };
+
+//   const handleCreateRoom = async () => {
+//     if (roomDetails.roomName.trim()) {
+//       setGameMode("room");
+//       try {
+//         const token = localStorage.getItem("authToken");
+
+//         const config = {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         };
+
+//         const response = await axiosInstance.post(
+//           "/api/room/create",
+//           roomDetails,
+//           config
+//         );
+
+//         if (response.data) {
+//           alert("Room Created Successfully");
+//         }
+//       } catch (error) {
+//         console.error("Failed to create room:", error);
+//         alert("Error creating room");
+//       }
+//     } else {
+//       alert("Room name is required.");
+//     }
+//   };
+
+//   const handleJoinRoom = (roomCode) => {
+//     console.log("Joining room with code:", roomCode);
+//     setGameMode("room");
+//   };
+
+//   const toggleHideGame = () => {
+//     setIsGameHidden(!isGameHidden);
+//   };
+
+//   return (
+//     <div className="app">
+//       <TopBar
+//         selectedColor={selectedColor}
+//         completedColor={completedColor}
+//         fontFamily={fontFamily}
+//         handleSelectedColorChange={(e) => setSelectedColor(e.target.value)}
+//         handleCompletedColorChange={(e) => setCompletedColor(e.target.value)}
+//         handleFontChange={(e) => setFontFamily(e.target.value)}
+//         handleModeReset={handleModeReset}
+//         gameMode={gameMode}
+//         authenticated={authenticated}
+//         user={user}
+//         handleLogin={handleLogin}
+//         handleLogout={handleLogout}
+//       />
+
+//       {!gameMode && <GameMode handleModeSelect={handleModeSelect} />}
+
+//       {gameMode === "offline" && !subMode && (
+//         <OfflineMode
+//           handleSubModeSelect={handleSubModeSelect}
+//           handleModeReset={handleModeReset}
+//         />
+//       )}
+//       {gameMode === "offline" && subMode === "vsFriends" && (
+//         <Game
+//           isOnline={false}
+//           fontFamily={fontFamily}
+//           selectedColor={selectedColor}
+//           completedColor={completedColor}
+//           toggleHideGame={toggleHideGame}
+//           isGameHidden={isGameHidden}
+//         />
+//       )}
+//       {gameMode === "offline" && subMode === "vsBot" && (
+//         <Game
+//           isOnline={false}
+//           vsBot={true}
+//           fontFamily={fontFamily}
+//           selectedColor={selectedColor}
+//           completedColor={completedColor}
+//           toggleHideGame={toggleHideGame}
+//           isGameHidden={isGameHidden}
+//         />
+//       )}
+
+//       {gameMode === "online" && !subMode && (
+//         <OnlineMode
+//           handleSubModeSelect={handleSubModeSelect}
+//           handleModeReset={handleModeReset}
+//         />
+//       )}
+//       {gameMode === "online" && subMode === "createRoom" && (
+//         <CreateRoom
+//           roomDetails={roomDetails}
+//           handleRoomDetailsChange={handleRoomDetailsChange}
+//           handleCreateRoom={handleCreateRoom}
+//         />
+//       )}
+//       {gameMode === "online" && subMode === "joinRoom" && (
+//         <JoinRoom handleJoinRoom={handleJoinRoom} />
+//       )}
+
+//       {gameMode === "room" && (
+//         <Game
+//           isOnline={true}
+//           roomDetails={roomDetails}
+//           fontFamily={fontFamily}
+//           selectedColor={selectedColor}
+//           completedColor={completedColor}
+//           toggleHideGame={toggleHideGame}
+//           isGameHidden={isGameHidden}
+//         />
+//       )}
+
+//       <Footer />
+//     </div>
+//   );
+// }
+
+// export default App;
+
+import React, { useEffect } from "react";
 import "./index.css";
 import Game from "./components/gameplay/Game";
 import GameMode from "./components/modes/GameMode";
@@ -8,34 +244,34 @@ import CreateRoom from "./components/modes/CreateRoom";
 import JoinRoom from "./components/modes/JoinRoom";
 import TopBar from "./components/shared/Topbar";
 import Footer from "./components/shared/Footer";
-import { useLocation, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-
-const getSavedMode = () => {
-  return sessionStorage.getItem("gameMode") || null;
-};
-const getSavedSubMode = () => {
-  return sessionStorage.getItem("subMode") || null;
-};
+import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+import { axiosInstance } from "./axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, logoutSuccess } from "./store/userSlice";
+import {
+  setGameMode,
+  setSubMode,
+  updateRoomDetails,
+  resetGame,
+  toggleGameHidden,
+} from "./store/gameSlice";
+import { persistor } from "./store/store";
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-  const [gameMode, setGameMode] = useState(getSavedMode());
-  const [subMode, setSubMode] = useState(getSavedSubMode());
-  const [roomDetails, setRoomDetails] = useState({
-    roomName: "",
-    gridSize: 5,
-    maxPlayers: 2,
-  });
-
-  const [selectedColor, setSelectedColor] = useState("#8551ca");
-  const [completedColor, setCompletedColor] = useState("#1a7012");
-  const [fontFamily, setFontFamily] = useState("Lobster");
-  const [isGameHidden, setIsGameHidden] = useState(false);
-
-  const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {
+    gameMode,
+    subMode,
+    roomDetails,
+    selectedColor,
+    completedColor,
+    fontFamily,
+    isGameHidden,
+  } = useSelector((state) => state.game);
+  const { authenticated, user } = useSelector((state) => state.user);
 
   // Handle token in URL and set user authentication state
   useEffect(() => {
@@ -45,76 +281,90 @@ function App() {
     if (token) {
       localStorage.setItem("authToken", token);
       const decodedUser = jwtDecode(token);
-      setUser(decodedUser);
-      setAuthenticated(true);
+      dispatch(loginSuccess(decodedUser));
       window.history.replaceState({}, document.title, "/");
     } else {
       const storedToken = localStorage.getItem("authToken");
       if (storedToken) {
         try {
           const decodedUser = jwtDecode(storedToken);
-          setUser(decodedUser);
-          setAuthenticated(true);
+          dispatch(loginSuccess(decodedUser));
         } catch (error) {
           console.error("Invalid token:", error);
           localStorage.removeItem("authToken");
         }
       }
     }
-  }, []);
+  }, [dispatch]);
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:4000/api/auth/google";
+    window.location.href = `${process.env.REACT_APP_API_URI}/auth/google`;
   };
 
   const handleLogout = async () => {
     try {
       await fetch("/logout", { method: "GET" });
       localStorage.removeItem("authToken");
-      setAuthenticated(false);
-      setUser(null);
-      setGameMode(null);
-      setSubMode(null);
-      sessionStorage.removeItem("gameMode");
-      sessionStorage.removeItem("subMode");
+      dispatch(logoutSuccess());
+      dispatch(resetGame());
+      persistor.purge(); // Clear persisted state
       navigate("/");
     } catch (error) {
       console.log("Error during logout:", error);
     }
   };
+  
 
   const handleModeSelect = (mode) => {
     if (mode === "online" && !authenticated) {
       alert("Please login to play online!");
       return;
     }
-    setGameMode(mode);
-    setSubMode(null);
+    dispatch(setGameMode(mode));
+    dispatch(setSubMode(null));
     sessionStorage.setItem("gameMode", mode);
   };
 
   const handleSubModeSelect = (subMode) => {
-    setSubMode(subMode);
+    dispatch(setSubMode(subMode));
     sessionStorage.setItem("subMode", subMode);
   };
 
   const handleModeReset = () => {
-    setGameMode(null);
-    setSubMode(null);
+    dispatch(resetGame());
     sessionStorage.removeItem("gameMode");
     sessionStorage.removeItem("subMode");
   };
 
   const handleRoomDetailsChange = (e) => {
-    setRoomDetails({
-      ...roomDetails,
-      [e.target.name]: e.target.value,
-    });
+    dispatch(updateRoomDetails({ [e.target.name]: e.target.value }));
   };
 
-  const handleCreateRoom = () => {
+  const handleCreateRoom = async () => {
     if (roomDetails.roomName.trim()) {
-      setGameMode("room");
+      dispatch(setGameMode("room"));
+      try {
+        const token = localStorage.getItem("authToken");
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await axiosInstance.post(
+          "/room/create",
+          roomDetails,
+          config
+        );
+
+        if (response.data) {
+          alert("Room Created Successfully");
+        }
+      } catch (error) {
+        console.error("Failed to create room:", error);
+        alert("Error creating room");
+      }
     } else {
       alert("Room name is required.");
     }
@@ -122,11 +372,11 @@ function App() {
 
   const handleJoinRoom = (roomCode) => {
     console.log("Joining room with code:", roomCode);
-    setGameMode("room");
+    dispatch(setGameMode("room"));
   };
 
   const toggleHideGame = () => {
-    setIsGameHidden(!isGameHidden);
+    dispatch(toggleGameHidden());
   };
 
   return (
@@ -135,9 +385,15 @@ function App() {
         selectedColor={selectedColor}
         completedColor={completedColor}
         fontFamily={fontFamily}
-        handleSelectedColorChange={(e) => setSelectedColor(e.target.value)}
-        handleCompletedColorChange={(e) => setCompletedColor(e.target.value)}
-        handleFontChange={(e) => setFontFamily(e.target.value)}
+        handleSelectedColorChange={(e) =>
+          dispatch(updateRoomDetails({ selectedColor: e.target.value }))
+        }
+        handleCompletedColorChange={(e) =>
+          dispatch(updateRoomDetails({ completedColor: e.target.value }))
+        }
+        handleFontChange={(e) =>
+          dispatch(updateRoomDetails({ fontFamily: e.target.value }))
+        }
         handleModeReset={handleModeReset}
         gameMode={gameMode}
         authenticated={authenticated}

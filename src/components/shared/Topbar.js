@@ -51,11 +51,11 @@ function TopBar({
         {authenticated ? (
           <div className="user-info-container">
             <button className="user-name-button" onClick={toggleDropdown}>
-              {user.name} {/* Display user's name */}
+              {user.name}
             </button>
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                <p>{user.email}</p> {/* Display user's email */}
+                <p>{user.email}</p>
                 <button onClick={handleLogout} className="logout-btn">
                   Logout
                 </button>

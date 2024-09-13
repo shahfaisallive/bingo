@@ -1,7 +1,12 @@
 import React from "react";
-import './CreateRoom.css'
+import "./CreateRoom.css";
 
-const CreateRoom = ({ roomDetails, handleRoomDetailsChange, handleCreateRoom }) => {
+const CreateRoom = ({
+  roomDetails,
+  handleRoomDetailsChange,
+  handleCreateRoom,
+}) => {
+
   return (
     <div className="room-creation-form">
       <h2>Create Room</h2>
@@ -37,7 +42,9 @@ const CreateRoom = ({ roomDetails, handleRoomDetailsChange, handleCreateRoom }) 
           onChange={handleRoomDetailsChange}
         />
       </label>
-      <button className="create-room-button" onClick={handleCreateRoom}>Create Room</button>
+      <button className="create-room-button" onClick={handleCreateRoom}>
+        Create Room
+      </button>
     </div>
   );
 };
