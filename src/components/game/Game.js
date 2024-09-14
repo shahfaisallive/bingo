@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import './Game.css'
+import "./Game.css";
 import confetti from "canvas-confetti";
-import Score from "./Score";
-import GridCounter from "./GridCounter";
-import GridTable from "./GridTable";
-import GameButtons from "./GameButtons";
+import Score from "./shared/Score";
+import GridCounter from "./shared/GridCounter";
+import GridTable from "./shared/GridTable";
+import GameButtons from "./shared/GameButtons";
 import Lottie from "lottie-react";
 
 import celebration1 from "../../animations/celebration1.json";
@@ -20,7 +20,7 @@ function Game({
   selectedColor,
   completedColor,
   toggleHideGame,
-  isGameHidden
+  isGameHidden,
 }) {
   const initialGrid = (size) =>
     Array(size)
@@ -218,7 +218,7 @@ function Game({
     setScore(0);
     setIsWinner(false);
     setIsPerfectBingo(false);
-    setShowLottie(false); 
+    setShowLottie(false);
   };
 
   const handleReset = () => {

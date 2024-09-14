@@ -1,242 +1,8 @@
-// import React, { useEffect, useState } from "react";
-// import "./index.css";
-// import Game from "./components/gameplay/Game";
-// import GameMode from "./components/modes/GameMode";
-// import OfflineMode from "./components/modes/OfflineMode";
-// import OnlineMode from "./components/modes/OnlineMode";
-// import CreateRoom from "./components/modes/CreateRoom";
-// import JoinRoom from "./components/modes/JoinRoom";
-// import TopBar from "./components/shared/Topbar";
-// import Footer from "./components/shared/Footer";
-// import { useNavigate } from "react-router-dom";
-// import { jwtDecode } from "jwt-decode";
-// import { axiosInstance } from "./axiosInstance";
-
-// const getSavedMode = () => {
-//   return sessionStorage.getItem("gameMode") || null;
-// };
-// const getSavedSubMode = () => {
-//   return sessionStorage.getItem("subMode") || null;
-// };
-
-// function App() {
-//   const [authenticated, setAuthenticated] = useState(false);
-//   const [user, setUser] = useState(null);
-//   const [gameMode, setGameMode] = useState(getSavedMode());
-//   const [subMode, setSubMode] = useState(getSavedSubMode());
-//   const [roomDetails, setRoomDetails] = useState({
-//     roomName: "",
-//     gridSize: 5,
-//     maxPlayers: 2,
-//   });
-
-//   const [selectedColor, setSelectedColor] = useState("#8551ca");
-//   const [completedColor, setCompletedColor] = useState("#1a7012");
-//   const [fontFamily, setFontFamily] = useState("Lobster");
-//   const [isGameHidden, setIsGameHidden] = useState(false);
-
-//   const navigate = useNavigate();
-
-//   // Handle token in URL and set user authentication state
-//   useEffect(() => {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const token = urlParams.get("token");
-
-//     if (token) {
-//       localStorage.setItem("authToken", token);
-//       const decodedUser = jwtDecode(token);
-//       setUser(decodedUser);
-//       setAuthenticated(true);
-//       window.history.replaceState({}, document.title, "/");
-//     } else {
-//       const storedToken = localStorage.getItem("authToken");
-//       if (storedToken) {
-//         try {
-//           const decodedUser = jwtDecode(storedToken);
-//           setUser(decodedUser);
-//           setAuthenticated(true);
-//         } catch (error) {
-//           console.error("Invalid token:", error);
-//           localStorage.removeItem("authToken");
-//         }
-//       }
-//     }
-//   }, []);
-
-//   const handleLogin = () => {
-//     window.location.href = `${process.env.REACT_APP_API_URI}/auth/google`;
-//   };
-
-//   const handleLogout = async () => {
-//     try {
-//       await fetch("/logout", { method: "GET" });
-//       localStorage.removeItem("authToken");
-//       setAuthenticated(false);
-//       setUser(null);
-//       setGameMode(null);
-//       setSubMode(null);
-//       sessionStorage.removeItem("gameMode");
-//       sessionStorage.removeItem("subMode");
-//       navigate("/");
-//     } catch (error) {
-//       console.log("Error during logout:", error);
-//     }
-//   };
-
-//   const handleModeSelect = (mode) => {
-//     if (mode === "online" && !authenticated) {
-//       alert("Please login to play online!");
-//       return;
-//     }
-//     setGameMode(mode);
-//     setSubMode(null);
-//     sessionStorage.setItem("gameMode", mode);
-//   };
-
-//   const handleSubModeSelect = (subMode) => {
-//     setSubMode(subMode);
-//     sessionStorage.setItem("subMode", subMode);
-//   };
-
-//   const handleModeReset = () => {
-//     setGameMode(null);
-//     setSubMode(null);
-//     sessionStorage.removeItem("gameMode");
-//     sessionStorage.removeItem("subMode");
-//   };
-
-//   const handleRoomDetailsChange = (e) => {
-//     setRoomDetails({
-//       ...roomDetails,
-//       [e.target.name]: e.target.value,
-//     });
-//   };
-
-//   const handleCreateRoom = async () => {
-//     if (roomDetails.roomName.trim()) {
-//       setGameMode("room");
-//       try {
-//         const token = localStorage.getItem("authToken");
-
-//         const config = {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         };
-
-//         const response = await axiosInstance.post(
-//           "/api/room/create",
-//           roomDetails,
-//           config
-//         );
-
-//         if (response.data) {
-//           alert("Room Created Successfully");
-//         }
-//       } catch (error) {
-//         console.error("Failed to create room:", error);
-//         alert("Error creating room");
-//       }
-//     } else {
-//       alert("Room name is required.");
-//     }
-//   };
-
-//   const handleJoinRoom = (roomCode) => {
-//     console.log("Joining room with code:", roomCode);
-//     setGameMode("room");
-//   };
-
-//   const toggleHideGame = () => {
-//     setIsGameHidden(!isGameHidden);
-//   };
-
-//   return (
-//     <div className="app">
-//       <TopBar
-//         selectedColor={selectedColor}
-//         completedColor={completedColor}
-//         fontFamily={fontFamily}
-//         handleSelectedColorChange={(e) => setSelectedColor(e.target.value)}
-//         handleCompletedColorChange={(e) => setCompletedColor(e.target.value)}
-//         handleFontChange={(e) => setFontFamily(e.target.value)}
-//         handleModeReset={handleModeReset}
-//         gameMode={gameMode}
-//         authenticated={authenticated}
-//         user={user}
-//         handleLogin={handleLogin}
-//         handleLogout={handleLogout}
-//       />
-
-//       {!gameMode && <GameMode handleModeSelect={handleModeSelect} />}
-
-//       {gameMode === "offline" && !subMode && (
-//         <OfflineMode
-//           handleSubModeSelect={handleSubModeSelect}
-//           handleModeReset={handleModeReset}
-//         />
-//       )}
-//       {gameMode === "offline" && subMode === "vsFriends" && (
-//         <Game
-//           isOnline={false}
-//           fontFamily={fontFamily}
-//           selectedColor={selectedColor}
-//           completedColor={completedColor}
-//           toggleHideGame={toggleHideGame}
-//           isGameHidden={isGameHidden}
-//         />
-//       )}
-//       {gameMode === "offline" && subMode === "vsBot" && (
-//         <Game
-//           isOnline={false}
-//           vsBot={true}
-//           fontFamily={fontFamily}
-//           selectedColor={selectedColor}
-//           completedColor={completedColor}
-//           toggleHideGame={toggleHideGame}
-//           isGameHidden={isGameHidden}
-//         />
-//       )}
-
-//       {gameMode === "online" && !subMode && (
-//         <OnlineMode
-//           handleSubModeSelect={handleSubModeSelect}
-//           handleModeReset={handleModeReset}
-//         />
-//       )}
-//       {gameMode === "online" && subMode === "createRoom" && (
-//         <CreateRoom
-//           roomDetails={roomDetails}
-//           handleRoomDetailsChange={handleRoomDetailsChange}
-//           handleCreateRoom={handleCreateRoom}
-//         />
-//       )}
-//       {gameMode === "online" && subMode === "joinRoom" && (
-//         <JoinRoom handleJoinRoom={handleJoinRoom} />
-//       )}
-
-//       {gameMode === "room" && (
-//         <Game
-//           isOnline={true}
-//           roomDetails={roomDetails}
-//           fontFamily={fontFamily}
-//           selectedColor={selectedColor}
-//           completedColor={completedColor}
-//           toggleHideGame={toggleHideGame}
-//           isGameHidden={isGameHidden}
-//         />
-//       )}
-
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React, { useEffect } from "react";
 import "./index.css";
-import Game from "./components/gameplay/Game";
+import Game from "./components/game/Game";
+import OfflineGame from "./components/game/offline/OfflineGame";
+import OnlineGame from "./components/game/online/OnlineGame";
 import GameMode from "./components/modes/GameMode";
 import OfflineMode from "./components/modes/OfflineMode";
 import OnlineMode from "./components/modes/OnlineMode";
@@ -245,7 +11,7 @@ import JoinRoom from "./components/modes/JoinRoom";
 import TopBar from "./components/shared/Topbar";
 import Footer from "./components/shared/Footer";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { axiosInstance } from "./axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, logoutSuccess } from "./store/userSlice";
@@ -313,7 +79,6 @@ function App() {
       console.log("Error during logout:", error);
     }
   };
-  
 
   const handleModeSelect = (mode) => {
     if (mode === "online" && !authenticated) {
@@ -342,7 +107,6 @@ function App() {
 
   const handleCreateRoom = async () => {
     if (roomDetails.roomName.trim()) {
-      dispatch(setGameMode("room"));
       try {
         const token = localStorage.getItem("authToken");
 
@@ -361,6 +125,7 @@ function App() {
         if (response.data) {
           alert("Room Created Successfully");
         }
+        dispatch(setGameMode("room"));
       } catch (error) {
         console.error("Failed to create room:", error);
         alert("Error creating room");
@@ -370,9 +135,43 @@ function App() {
     }
   };
 
-  const handleJoinRoom = (roomCode) => {
-    console.log("Joining room with code:", roomCode);
-    dispatch(setGameMode("room"));
+  const handleJoinRoom = async (roomCode) => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      if (!token) {
+        alert("Please login to join a room.");
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axiosInstance.post(
+        `/room/join`,
+        { roomCode },
+        config
+      );
+
+      if (response.data) {
+        const roomDetails = response.data;
+
+        // Update the room details in Redux store
+        dispatch(updateRoomDetails(roomDetails));
+
+        // Set game mode to "room" and navigate the user to the game room
+        dispatch(setGameMode("room"));
+        alert("Successfully joined the room!");
+      } else {
+        alert("Failed to join the room.");
+      }
+    } catch (error) {
+      console.error("Error joining room:", error);
+      alert("An error occurred while joining the room.");
+    }
   };
 
   const toggleHideGame = () => {
@@ -411,7 +210,7 @@ function App() {
         />
       )}
       {gameMode === "offline" && subMode === "vsFriends" && (
-        <Game
+        <OfflineGame
           isOnline={false}
           fontFamily={fontFamily}
           selectedColor={selectedColor}
@@ -421,7 +220,7 @@ function App() {
         />
       )}
       {gameMode === "offline" && subMode === "vsBot" && (
-        <Game
+        <OfflineGame
           isOnline={false}
           vsBot={true}
           fontFamily={fontFamily}
@@ -450,7 +249,7 @@ function App() {
       )}
 
       {gameMode === "room" && (
-        <Game
+        <OnlineGame
           isOnline={true}
           roomDetails={roomDetails}
           fontFamily={fontFamily}

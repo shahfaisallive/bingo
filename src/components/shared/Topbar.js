@@ -45,7 +45,7 @@ function TopBar({
         >
           {isHovered
             ? "Change Mode"
-            : `${gameMode === "online" ? "Online Mode" : "Offline Mode"}`}
+            : `${gameMode === "online" || gameMode === "room" ? "Online Mode" : "Offline Mode"}`}
         </button>
 
         {authenticated ? (
