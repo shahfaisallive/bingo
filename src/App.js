@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
-import Game from "./components/game/Game";
+import { io } from "socket.io-client";
 import OfflineGame from "./components/game/offline/OfflineGame";
 import OnlineGame from "./components/game/online/OnlineGame";
 import GameMode from "./components/modes/GameMode";
@@ -24,6 +24,8 @@ import {
 } from "./store/gameSlice";
 import { persistor } from "./store/store";
 
+const SOCKET_URL = "http://localhost:4000";
+
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ function App() {
     isGameHidden,
   } = useSelector((state) => state.game);
   const { authenticated, user } = useSelector((state) => state.user);
+  const [socket, setSocket] = useState(null);
 
   // Handle token in URL and set user authentication state
   useEffect(() => {
@@ -61,6 +64,30 @@ function App() {
         }
       }
     }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const newSocket = io(SOCKET_URL);
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      console.log("Connected to socket server", newSocket.id);
+    });
+
+    // Handle socket disconnect
+    newSocket.on("disconnect", () => {
+      console.log("Disconnected from socket server");
+    });
+
+    // Handle room update when a player joins
+    // newSocket.on("playerJoined", (data) => {
+    //   console.log("Player joined", data);
+    //   dispatch(updateRoomDetails(data)); // Update room details
+    // });
+
+    return () => {
+      newSocket.disconnect();
+    };
   }, [dispatch]);
 
   const handleLogin = () => {
@@ -109,23 +136,23 @@ function App() {
     if (roomDetails.roomName.trim()) {
       try {
         const token = localStorage.getItem("authToken");
-
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
-
+  
+        // API call to create the room
         const response = await axiosInstance.post(
           "/room/create",
           roomDetails,
           config
         );
-
+  
         if (response.data) {
+          socket.emit("joinRoom", response.data.roomCode); // Automatically join the room after creation
           alert("Room Created Successfully");
         }
-        dispatch(setGameMode("room"));
       } catch (error) {
         console.error("Failed to create room:", error);
         alert("Error creating room");
@@ -134,6 +161,7 @@ function App() {
       alert("Room name is required.");
     }
   };
+  
 
   const handleJoinRoom = async (roomCode) => {
     try {
@@ -211,7 +239,6 @@ function App() {
       )}
       {gameMode === "offline" && subMode === "vsFriends" && (
         <OfflineGame
-          isOnline={false}
           fontFamily={fontFamily}
           selectedColor={selectedColor}
           completedColor={completedColor}
@@ -221,8 +248,6 @@ function App() {
       )}
       {gameMode === "offline" && subMode === "vsBot" && (
         <OfflineGame
-          isOnline={false}
-          vsBot={true}
           fontFamily={fontFamily}
           selectedColor={selectedColor}
           completedColor={completedColor}
@@ -245,12 +270,12 @@ function App() {
         />
       )}
       {gameMode === "online" && subMode === "joinRoom" && (
-        <JoinRoom handleJoinRoom={handleJoinRoom} />
+        <JoinRoom handleJoinRoom={handleJoinRoom}  socket={socket}/>
       )}
 
       {gameMode === "room" && (
         <OnlineGame
-          isOnline={true}
+          socket={socket}
           roomDetails={roomDetails}
           fontFamily={fontFamily}
           selectedColor={selectedColor}

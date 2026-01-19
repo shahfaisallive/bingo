@@ -1,6 +1,17 @@
-.game{
+.online-game-wrapper{
     padding-top: 50px;
     display: flex;
+    width: 100%;
+}
+
+.members-container{
+    width: 25%;
+}
+.game-box-container{
+    width: 50%;
+}
+.chat-box-container{
+    width: 25%;
 }
 
 .error-message {

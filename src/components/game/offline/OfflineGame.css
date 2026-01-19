@@ -1,6 +1,6 @@
-.game{
+.offline-game-wrapper{
     padding-top: 50px;
-    display: flex;
+    display: block !important;
 }
 
 .error-message {

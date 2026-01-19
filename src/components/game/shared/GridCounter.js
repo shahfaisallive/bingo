@@ -1,10 +1,10 @@
 import React from "react";
 import './GridCounter.css'
 
-function GridCounter({ size, handleIncrement, handleDecrement }) {
+function GridCounter({ size, handleIncrement, handleDecrement, gameMode }) {
   return (
     <div className="size-input-container">
-      <div className="counter">
+      {gameMode === "offline" ? <div className="counter">
         <button onClick={handleDecrement} disabled={size <= 2} className="counter-button">
           -
         </button>
@@ -12,7 +12,9 @@ function GridCounter({ size, handleIncrement, handleDecrement }) {
         <button onClick={handleIncrement} disabled={size >= 11} className="counter-button">
           +
         </button>
-      </div>
+      </div> : <div className="counter">
+        <span>Grid Size: {size}</span>
+      </div>}
     </div>
   );
 }
